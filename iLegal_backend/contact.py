@@ -1,5 +1,7 @@
 import stringdist
+import random
 from random import randint
+from datetime import datetime
 
 # Mockup of a CRM database
 contacts = [
@@ -36,6 +38,7 @@ contacts = [
 ]
 
 def getContactDetails(name):
+    random.seed(datetime.now())
     File = open('./firstnames.txt')
     firstnames = File.read()
     namesDistance = [];
