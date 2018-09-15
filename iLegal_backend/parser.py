@@ -20,7 +20,8 @@ script_dir = os.path.dirname(__file__)
 
 fileName2Id = {}
 noun2Ids = {}
-nouns2Id = {}
+id2Nouns = {}
+allNouns = []
 
 i = 0
 for fileName in os.listdir('../corpus/fulltext_dev'):
@@ -39,22 +40,24 @@ for fileName in os.listdir('../corpus/fulltext_dev'):
 
         nouns = extract_nouns(catchPhrase)
         for noun in nouns:
+            if noun not in allNouns:
+                allNouns.append(noun)
             if noun in noun2Ids:
                 noun2Ids[noun].add(i)
             else:
                 noun2Ids[noun] = set([i])
-            if noun not in nouns2Id:
-                if i not in  nouns2Id:
-                    nouns2Id[i] = set([noun])
+            if noun not in id2Nouns:
+                if i not in  id2Nouns:
+                    id2Nouns[i] = set([noun])
                 else:
-                    nouns2Id[i].add(noun)
+                    id2Nouns[i].add(noun)
 
     i += 1
 
 print(fileName2Id)
 print(noun2Ids)
-print(nouns2Id)
+print(id2Nouns)
 
 pickle.dump(fileName2Id, open('fileName2Id.pkl','wb'))
 pickle.dump(noun2Ids, open('noun2Ids.pkl','wb'))
-pickle.dump(nouns2Id, open('noun2Id.pkl','wb'))
+pickle.dump(id2Nouns, open('noun2Id.pkl','wb'))
