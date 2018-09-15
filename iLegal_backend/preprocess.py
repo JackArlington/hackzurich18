@@ -30,7 +30,6 @@ def get_terms(tree):
 
 
 def extract_nouns(text):
-    nltk.download('stopwords')
     nouns = []
     sentence_re = r'(?:(?:[A-Z])(?:.[A-Z])+.?)|(?:\w+(?:-\w+)*)|(?:\$?\d+(?:.\d+)?%?)|(?:...|)(?:[][.,;"\'?():-_`])'
     grammar = r"""
