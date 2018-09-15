@@ -18,7 +18,7 @@ def getName(case):
 nltk.download('stopwords')
 script_dir = os.path.dirname(__file__)
 
-id2MeataData = {}
+id2MetaData = {}
 noun2Ids = {}
 id2Nouns = {}
 allNouns = []
@@ -29,8 +29,7 @@ for fileName in os.listdir('../corpus/fulltext'):
         File = open(os.path.join('../corpus/fulltext', fileName))
 
         lines = File.read()
-
-        id2MeataData[i] = (fileName, getName(lines),os.path.join(script_dir, fileName), '')
+        id2MetaData[i] = (fileName, getName(lines),os.path.join(script_dir, fileName), '\n'.join(getAllCatchPhrases(lines)))
 
         # print(fileName)
         # print(getName(lines))
@@ -57,11 +56,11 @@ for fileName in os.listdir('../corpus/fulltext'):
     except:
         print("Oo")
 
-print(id2MeataData)
+print(id2MetaData)
 print(noun2Ids)
 print(id2Nouns)
 
-pickle.dump(id2MeataData, open('id2MeataData.pkl','wb'))
+pickle.dump(id2MetaData, open('id2MetaData.pkl','wb'))
 pickle.dump(noun2Ids, open('noun2Ids.pkl','wb'))
 pickle.dump(id2Nouns, open('noun2Id.pkl','wb'))
 pickle.dump(allNouns, open('allNouns.pkl','wb'))
