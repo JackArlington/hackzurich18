@@ -11,8 +11,14 @@ def hello():
 def parse_request():
     data = request.get_json(force=True)
     text = data['DisplayText']
-    nouns = extract_nouns(text)
-
+    hello_name, nouns = extract_nouns(text.lower())
     app.logger.info(nouns)
-    return jsonify(nouns)
+    res = {'nouns': nouns, 'hello_name':hello_name}
+    if hello_name is not "":
+        # todo: do something smart, jaccard similarity of documents etc
+
+    else:
+        # greeting case
+        # todo: call greeting method 
+    return jsonify(res)
  

@@ -30,6 +30,7 @@ def get_terms(tree):
 
 
 def extract_nouns(text):
+    nltk.download('stopwords')
     nouns = []
     sentence_re = r'(?:(?:[A-Z])(?:.[A-Z])+.?)|(?:\w+(?:-\w+)*)|(?:\$?\d+(?:.\d+)?%?)|(?:...|)(?:[][.,;"\'?():-_`])'
     grammar = r"""
@@ -42,10 +43,19 @@ def extract_nouns(text):
     """
     chunker = nltk.RegexpParser(grammar)
     toks = nltk.regexp_tokenize(text, sentence_re)
+    hello_expressions = ["hi", "hello"]
+    hello_name = ""
+    for exp in hello_expressions:
+        if exp in toks:
+            i = toks.index(exp)
+            if i < len(toks):
+                hello_name = toks[i+1]
+            else:
+                hello_name = "Albert"
     postoks = nltk.tag.pos_tag(toks)
     tree = chunker.parse(postoks)
     terms = get_terms(tree)
     for term in terms:
         if(len(term) > 0):
             nouns.append(' '.join(term))
-    return nouns
+    return hello_name, nouns

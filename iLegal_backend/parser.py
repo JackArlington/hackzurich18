@@ -35,7 +35,7 @@ for fileName in os.listdir('../corpus/fulltext_dev'):
 
     for catchPhrase in getAllCatchPhrases(lines):
 
-        nouns = extract_nouns(catchPhrase)
+        is_hello_exp, nouns = extract_nouns(catchPhrase)
         for noun in nouns:
             if noun in noun2Ids:
                 noun2Ids[noun].add(i)
