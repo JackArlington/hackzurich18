@@ -18,7 +18,7 @@ def normalise(word):
 def acceptable_word(word):
     """Checks conditions for acceptable word: length, stopword. We can increase the length if we want to consider large phrase"""
     swrds = stopwords.words('english')
-    accepted = bool(2 <= len(word) <= 42
+    accepted = bool(3 < len(word) <= 42
         and word.lower() not in stopwords.words('english'))
     return accepted
 
@@ -35,7 +35,7 @@ def extract_nouns(text):
     grammar = r"""
         NBAR:
             {<NN.*|JJ>*<NN.*>}  # Nouns and Adjectives, terminated with Nouns
-            
+
         NP:
             {<NBAR>}
             {<NBAR><IN><NBAR>}  # Above, connected with in/of/etc...
@@ -46,5 +46,6 @@ def extract_nouns(text):
     tree = chunker.parse(postoks)
     terms = get_terms(tree)
     for term in terms:
-        nouns.append(term)
+        if(len(term) > 0):
+            nouns.append(' '.join(term))
     return nouns
