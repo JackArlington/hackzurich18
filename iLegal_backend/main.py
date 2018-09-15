@@ -17,13 +17,11 @@ def parse_request():
     res = {'nouns': nouns, 'hello_name':hello_name}
     if hello_name is not "":
         # greeting case
+        app.logger.info(hello_name)
         return jsonify(getContactDetails(hello_name))
     else:
         # todo: do something smart, jaccard similarity of documents etc
-        app.logger.info(hello_name)
         return jsonify(res)
-
- 
 
 if __name__ == "__main__":
      app.run(debug=True)
