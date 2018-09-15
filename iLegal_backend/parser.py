@@ -1,5 +1,3 @@
-#!/bin/bash
-
 import os
 import nltk
 from textblob import TextBlob
@@ -47,13 +45,10 @@ for fileName in os.listdir('../corpus/fulltext'):
                     noun2Ids[noun].add(i)
                 else:
                     noun2Ids[noun] = set([i])
-                if noun not in id2Nouns:
-                    if i not in  id2Nouns:
-                        id2Nouns[i] = set([noun])
-                    else:
-                        id2Nouns[i].add(noun)
-
-        i += 1
+                if i in id2Nouns:
+                    id2Nouns[i].add(noun)
+                else:
+                    id2Nouns[i] = set([noun])
         id2MetaData[i] = {
             'fileName': fileName,
             'name': getName(lines),
@@ -61,6 +56,7 @@ for fileName in os.listdir('../corpus/fulltext'):
             'abstract': list(getAllCatchPhrases(lines)),
             'numberOfNouns': len(caseNouns)
             }
+        i += 1
 
     except:
         print("Oo")
