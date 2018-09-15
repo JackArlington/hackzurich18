@@ -43,7 +43,6 @@ def extract_nouns(text):
     chunker = nltk.RegexpParser(grammar)
     toks = nltk.regexp_tokenize(text, sentence_re)
     postoks = nltk.tag.pos_tag(toks)
-    app.logger.info(postoks)
     tree = chunker.parse(postoks)
     terms = get_terms(tree)
     for term in terms:
