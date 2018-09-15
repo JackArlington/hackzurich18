@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request, jsonify
 from preprocess import extract_nouns
+from contact import getContactDetails
 app = Flask(__name__)
 
 @app.route("/")
@@ -15,12 +16,13 @@ def parse_request():
     app.logger.info(nouns)
     res = {'nouns': nouns, 'hello_name':hello_name}
     if hello_name is not "":
-        # todo: do something smart, jaccard similarity of documents etc
-        return jsonify(res)
-    else:
         # greeting case
-        # todo: call greeting method 
+        return jsonify(getContactDetails(hello_name))
+    else:
+        # todo: do something smart, jaccard similarity of documents etc
+        app.logger.info(hello_name)
         return jsonify(res)
+
  
 
 if __name__ == "__main__":
