@@ -39,7 +39,7 @@ def parse_request():
 
         for noun in relevant_nouns:
             for i in noun2Ids[noun]:
-                relevant_cases[i] = relevant_cases.get(i, 0)
+                relevant_cases[i] = relevant_cases.get(i, 0) + 1
         similarities = []
         for i, count in relevant_cases.items():
             app.logger.info("count:")
@@ -48,7 +48,7 @@ def parse_request():
             app.logger.info(id2MetaData[i]["numberOfNouns"])
             similarities.append((i, count / (len(relevant_nouns) + id2MetaData[i]["numberOfNouns"])))
         
-        sorted(similarities, key=lambda x: x[1], reverse=True)
+        similarities = sorted(similarities, key=lambda x: x[1], reverse=True)
         app.logger.info(similarities)
         i = similarities[0][0]
         app.logger.info(similarities)
