@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "iLegal backend V0.2.1"
+    return "iLegal backend V1.1.2"
 
 @app.route('/ai', methods=['POST'])
 def parse_request():
@@ -16,9 +16,12 @@ def parse_request():
     res = {'nouns': nouns, 'hello_name':hello_name}
     if hello_name is not "":
         # todo: do something smart, jaccard similarity of documents etc
-
+        return jsonify(res)
     else:
         # greeting case
         # todo: call greeting method 
-    return jsonify(res)
+        return jsonify(res)
  
+
+if __name__ == "__main__":
+     app.run(debug=True)
