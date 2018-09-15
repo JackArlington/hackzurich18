@@ -13,8 +13,11 @@ allNouns = pickle.load(open('allNouns.pkl','rb'))
 
 @app.route("/")
 def hello():
-    print(allNouns)
     return "iLegal backend V1.1.2"
+
+@app.route("/keywords")
+def getAllKeywords():
+    return jsonify(allNouns)
 
 @app.route('/ai', methods=['POST'])
 def parse_request():
@@ -35,32 +38,54 @@ def parse_request():
                 relevant_nouns.append(noun)
         app.logger.info("Detected the following keywords: ")
         app.logger.info(relevant_nouns)
-        relevant_cases = {}
+        if len(relevant_nouns) > 0:
 
-        for noun in relevant_nouns:
-            for i in noun2Ids[noun]:
-                relevant_cases[i] = relevant_cases.get(i, 0) + 1
-        similarities = []
-        for i, count in relevant_cases.items():
-            app.logger.info("count:")
-            app.logger.info(count)
-            app.logger.info(len(relevant_nouns))
-            app.logger.info(id2MetaData[i]["numberOfNouns"])
-            similarities.append((i, count / (len(relevant_nouns) + id2MetaData[i]["numberOfNouns"])))
-        
-        similarities = sorted(similarities, key=lambda x: x[1], reverse=True)
-        app.logger.info(similarities)
-        i = similarities[0][0]
-        app.logger.info(similarities)
+            relevant_cases = {}
 
-        res = {
-            "text": "This case might be relevant for your current discussion: ",
-            "file_name": id2MetaData[i]["fileName"],
-            "case_title": id2MetaData[i]["name"],
-            "catch_phrases": id2MetaData[i]["abstract"]
-        }
-        return jsonify(res)
+            for noun in relevant_nouns:
+                for i in noun2Ids[noun]:
+                    relevant_cases[i] = relevant_cases.get(i, 0) + 1
+            similarities = []
+            for i, count in relevant_cases.items():
+                app.logger.info("count:")
+                app.logger.info(count)
+                app.logger.info(len(relevant_nouns))
+                app.logger.info(id2MetaData[i]["numberOfNouns"])
+                similarities.append((i, count / (len(relevant_nouns) + id2MetaData[i]["numberOfNouns"])))
+            
+            similarities = sorted(similarities, key=lambda x: x[1], reverse=True)
+            app.logger.info(similarities)
+            if len(similarities) > 0:
+                app.logger.info(len(similarities))
+                app.logger.info(similarities)
+                i = similarities[0][0]
+                app.logger.info(similarities)
+                catchphrases = id2MetaData[i]["abstract"]
+                relevant_catchphrase = ""
+                if len(catchphrases) > 0:
+                    relevant_catchphrase = catchphrases[0]
+                best_catchphrases = []
+                # for ph in relevant_catchphrase:
+                #    for n in relevant_nouns:
+                #        if
 
+                res = {
+                    "result": "success",
+                    "text": "This case might be relevant for your current discussion: ",
+                    "file_name": id2MetaData[i]["fileName"],
+                    "case_title": id2MetaData[i]["name"],
+                    "catch_phrases": id2MetaData[i]["abstract"],
+                    "relevant_keywords": relevant_nouns,
+                    "relevant_catchphrase": ""
+                }
+            else:
+                res = {
+                    "result": "empty"
+                }
+        else:
+            # there is no result
+            res = {"result":"empty"}
+    return jsonify(res)
 
 
 if __name__ == "__main__":
