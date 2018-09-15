@@ -29,17 +29,18 @@ for fileName in os.listdir('../corpus/fulltext'):
         File = open(os.path.join('../corpus/fulltext', fileName))
 
         lines = File.read()
-        id2MetaData[i] = (fileName, getName(lines),os.path.join(script_dir, fileName), '\n'.join(getAllCatchPhrases(lines)))
 
         # print(fileName)
         # print(getName(lines))
         # print(getAllCatchPhrases(lines))
         nouns = []
-
+        caseNouns = set()
         for catchPhrase in getAllCatchPhrases(lines):
 
             name, nouns = extract_nouns(catchPhrase)
+            #allNouns.add(nouns)
             for noun in nouns:
+                caseNouns.add(noun)
                 if noun not in allNouns:
                     allNouns.append(noun)
                 if noun in noun2Ids:
@@ -53,6 +54,14 @@ for fileName in os.listdir('../corpus/fulltext'):
                         id2Nouns[i].add(noun)
 
         i += 1
+        id2MetaData[i] = {
+            'fileName': fileName,
+            'name': getName(lines),
+            'path': os.path.join(script_dir, fileName),
+            'abstract': list(getAllCatchPhrases(lines)),
+            'numberOfNouns': len(caseNouns)
+            }
+
     except:
         print("Oo")
 
