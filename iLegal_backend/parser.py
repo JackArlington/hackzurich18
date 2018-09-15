@@ -20,27 +20,48 @@ script_dir = os.path.dirname(__file__)
 
 fileName2Id = {}
 noun2Ids = {}
+id2Nouns = {}
+allNouns = []
+
 i = 0
-for fileName in os.listdir('../corpus/fulltext_dev'):
-    File = open(os.path.join('../corpus/fulltext_dev', fileName))
+for fileName in os.listdir('../corpus/fulltext'):
+    try:
+        File = open(os.path.join('../corpus/fulltext', fileName))
 
-    lines = File.read()
-    fileName2Id[i] = (fileName, getName(lines),os.path.join(script_dir, fileName))
+        lines = File.read()
+        fileName2Id[i] = (fileName, getName(lines),os.path.join(script_dir, fileName))
 
 
-    # print(fileName)
-    # print(getName(lines))
-    # print(getAllCatchPhrases(lines))
-    nouns = []
+        # print(fileName)
+        # print(getName(lines))
+        # print(getAllCatchPhrases(lines))
+        nouns = []
 
-    for catchPhrase in getAllCatchPhrases(lines):
+        for catchPhrase in getAllCatchPhrases(lines):
 
-        is_hello_exp, nouns = extract_nouns(catchPhrase)
-        for noun in nouns:
-            if noun in noun2Ids:
-                noun2Ids[noun].add(i)
-            else:
-                noun2Ids[noun] = set([i])
-    i += 1
+            name, nouns = extract_nouns(catchPhrase)
+            for noun in nouns:
+                if noun not in allNouns:
+                    allNouns.append(noun)
+                if noun in noun2Ids:
+                    noun2Ids[noun].add(i)
+                else:
+                    noun2Ids[noun] = set([i])
+                if noun not in id2Nouns:
+                    if i not in  id2Nouns:
+                        id2Nouns[i] = set([noun])
+                    else:
+                        id2Nouns[i].add(noun)
+
+        i += 1
+    except:
+        print("Oo")
+
+print(fileName2Id)
+print(noun2Ids)
+print(id2Nouns)
+
 pickle.dump(fileName2Id, open('fileName2Id.pkl','wb'))
 pickle.dump(noun2Ids, open('noun2Ids.pkl','wb'))
+pickle.dump(id2Nouns, open('noun2Id.pkl','wb'))
+pickle.dump(allNouns, open('allNouns.pkl','wb'))
