@@ -25,11 +25,11 @@ def parse_request():
     text = data['DisplayText']
     hello_name, nouns = extract_nouns(text.lower())
     app.logger.info(nouns)
-    res = {'nouns': nouns, 'hello_name':hello_name}
+    res = {"result":"empty"}    # there is no result
     if hello_name is not "":
         # greeting case
         app.logger.info(hello_name)
-        return jsonify(getContactDetails(hello_name))
+        res = getContactDetails(hello_name)
     else:
         # todo: do something smart, jaccard similarity of documents etc
         relevant_nouns = []
@@ -65,9 +65,17 @@ def parse_request():
                 if len(catchphrases) > 0:
                     relevant_catchphrase = catchphrases[0]
                 best_catchphrases = []
-                # for ph in relevant_catchphrase:
-                #    for n in relevant_nouns:
-                #        if
+                for ph in catchphrases:
+                    cnt = 0
+                    for n in relevant_nouns:
+                        if ph.find(n) > -1:
+                            cnt +=1
+                    best_catchphrases.append( (ph, cnt))
+                best_catchphrases = sorted(best_catchphrases, key=lambda x: x[1], reverse=True)
+                app.logger.info("best catchphrases:")
+                app.logger.info(best_catchphrases)
+                if len(best_catchphrases) > 0:
+                    relevant_catchphrase = best_catchphrases[0][0]
 
                 res = {
                     "result": "success",
@@ -76,15 +84,8 @@ def parse_request():
                     "case_title": id2MetaData[i]["name"],
                     "catch_phrases": id2MetaData[i]["abstract"],
                     "relevant_keywords": relevant_nouns,
-                    "relevant_catchphrase": ""
+                    "relevant_catchphrase": relevant_catchphrase
                 }
-            else:
-                res = {
-                    "result": "empty"
-                }
-        else:
-            # there is no result
-            res = {"result":"empty"}
     return jsonify(res)
 
 
