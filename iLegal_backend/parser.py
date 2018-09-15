@@ -62,5 +62,5 @@ print(id2Nouns)
 
 pickle.dump(id2MetaData, open('id2MetaData.pkl','wb'))
 pickle.dump(noun2Ids, open('noun2Ids.pkl','wb'))
-pickle.dump(id2Nouns, open('noun2Id.pkl','wb'))
+pickle.dump(id2Nouns, open('id2Nouns.pkl','wb'))
 pickle.dump(allNouns, open('allNouns.pkl','wb'))
