@@ -1,3 +1,4 @@
 nltk
 flask
 stringdist
+flask-cors
