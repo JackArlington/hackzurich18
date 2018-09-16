@@ -16,20 +16,20 @@ export const Bound = styled.div`
 `;
 
 export const Text = styled.div `
-	line-height: 3rem;
-	opacity: 0.6;
+	line-height: ${props => props.isSmall ? `1.5rem` : `2.8rem`};	opacity: 0.6;
 	will-change: transform, opacity;
   color: snow;
-  font-size: 2rem;
-  overflow: hidden;
+	font-size: ${props => props.isSmall ? `1rem` : `2rem`};  overflow: hidden;
   padding: 12px;
   position: relative;
   transform: translateZ(0);
 `;
 
 export const Title = styled(Text)`
-	font-size: 2.4rem;
-	font-weight: 700;
-	opacity: 1;
 	border-bottom: 1px solid #eaeaea;
+	font-size: ${props => props.isSmall ? `1.2rem` : `2.4rem`};
+	font-weight: 700;
+	line-height: ${props => props.isSmall ? `1.6rem` : `2.8rem`};
+	opacity: 1;
+	text-transform: capitalize;
 `;

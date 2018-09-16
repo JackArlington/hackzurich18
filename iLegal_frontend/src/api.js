@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_ROOT = `https://159.69.197.71:5000/`;
+const API_ROOT = `http://159.69.197.71:5000/`;
 
 const requests = {
 	delete: url => axios.delete(`${API_ROOT}${url}`),

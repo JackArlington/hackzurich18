@@ -1,11 +1,12 @@
   import React from 'react';
 
   import Phrase from '../../components/Phrase';
+  import Contact from '../../components/Contact';
   import { ControlButton, ButtonContainer, Logo } from './style';
 
   import Mic from '../../assets/mic.svg';
   import StopCircle from '../../assets/stop-circle.svg';
-  import {API} from '../../api';
+  import { API } from '../../api';
 
   const KEY = '0bc834e91166449296f4a84d38c6c4e0';
 
@@ -14,7 +15,9 @@
       super(props)
 
       this.state = {
+        view: 'default',
         title: `iLegal`,
+        details: {},
         isRecording: false,
         phrase: `A digital assistant to leverage the lawyer client interaction`
       }
@@ -141,7 +144,6 @@
       document.addEventListener("DOMContentLoaded", () => {
         const createBtn = document.getElementById("createBtn");
         const startBtn = document.getElementById("startBtn");
-        const phraseDiv = document.getElementById("phraseDiv");
 
         startBtn.addEventListener("click", () => {
           if (KEY == "" || KEY == "YOUR_BING_SPEECH_API_KEY") {
@@ -152,8 +154,6 @@
           if (!this.recognizer) {
             this.Setup();
           }
-
-          phraseDiv.innerHTML = "";
 
           this.RecognizerStart(window.SDK, this.recognizer);
           startBtn.disabled = true;
@@ -179,11 +179,35 @@
 
 
       if (phrase.RecognitionStatus === "Success") {
-        const response = await API.getCatchphrase(json);
+        const {
+          data
+        } = await API.getCatchphrase(json);
 
-        if (response.hasOwnProperty('case_title') && response.hasOwnProperty('relevant_catchphrase')) {
-          this.setState({ title: response.relevant_catchphrase, phrase: response.case_title });
-        }
+
+        if (data.hasOwnProperty('firstname')) {
+          this.setState({
+            view: 'contact',
+            details: data,
+            phrase: 'A digital assistant to leverage the lawyer client interaction',
+            title: 'iLegal',
+          });
+        } else if (data.hasOwnProperty('case_title') && data.hasOwnProperty('relevant_catchphrase')) {
+          this.setState({
+            view: 'phrase',
+            detail: {},
+            phrase: data.case_title[0],
+            title: data.relevant_catchphrase,
+          });
+				}
+
+				// else {
+        //   this.setState({
+        //     view: 'default',
+        //     details: {},
+        //     phrase: 'A digital assistant to leverage the lawyer client interaction',
+        //     title: 'iLegal',
+        //   });
+        // }
 
         // this.setState({ phrase: phrase.DisplayText + "\n" });
       }
@@ -199,7 +223,11 @@
     }
 
     render() {
-      const { isRecording, phrase, title } = this.state;
+      const { isRecording, phrase, title, details, view } = this.state;
+      const show = {
+        Phrase:  view === 'default' || view === 'phrase',
+        Contact: view === 'contact'
+      }
 
       return (
         <div className="App">
@@ -208,7 +236,8 @@
               iLegal
             </div>
           </Logo>
-          <Phrase title={title} phrase={phrase} isRecording={isRecording} />
+          {show.Phrase && <Phrase title={title} phrase={phrase} isRecording={isRecording} />}
+          {show.Contact && <Contact details={details} />}
           <ButtonContainer id="startBtn">
             <p>Built by <span style={{fontWeight: 600}}>iLegal Team</span> for <span style={{fontWeight: 600}}>HackZürich</span>🇨🇭</p>
             <ControlButton type="button" onClick={this.handleButtonClick} isRecording={isRecording}>
