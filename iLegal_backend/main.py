@@ -2,8 +2,11 @@ from flask import Flask
 from flask import request, jsonify
 from preprocess import extract_nouns
 from contact import getContactDetails
+from flask_cors import CORS, cross_origin
 import pickle
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 id2MetaData = pickle.load(open('id2MetaData.pkl','rb'))
 noun2Ids = pickle.load(open('noun2Ids.pkl','rb'))
@@ -12,14 +15,17 @@ allNouns = pickle.load(open('allNouns.pkl','rb'))
 
 
 @app.route("/")
+@cross_origin()
 def hello():
     return "iLegal backend V1.1.2"
 
 @app.route("/keywords")
+@cross_origin()
 def getAllKeywords():
     return jsonify(allNouns)
 
 @app.route('/ai', methods=['POST'])
+@cross_origin()
 def parse_request():
     data = request.get_json(force=True)
     text = data['DisplayText']
@@ -52,7 +58,7 @@ def parse_request():
                 app.logger.info(len(relevant_nouns))
                 app.logger.info(id2MetaData[i]["numberOfNouns"])
                 similarities.append((i, count / (len(relevant_nouns) + id2MetaData[i]["numberOfNouns"])))
-            
+
             similarities = sorted(similarities, key=lambda x: x[1], reverse=True)
             app.logger.info(similarities)
             if len(similarities) > 0:
