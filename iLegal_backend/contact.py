@@ -19,7 +19,9 @@ contacts = [
 
         ],
         'remarks': [
-            'Did not like the Christmasgift in 2010'
+            'Married in 2011',
+            'Child in 2016',
+            'Co-Founder of InCe'
         ]
     },
     {
@@ -33,6 +35,8 @@ contacts = [
         'leeds': [
         ],
         'remarks': [
+            'Chairman of ACM SenSys',
+            'Prefers Italian Food'
         ]
     },
 ]
