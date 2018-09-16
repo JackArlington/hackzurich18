@@ -1,11 +1,26 @@
 # hackzurich18
 
 ## Get it up and running
-### backend:
+### Backend:
+```
 cd iLegal_backend
+```
+```
 python -m pip install -r requirements.txt
+```
+```
 ./runserver.sh
-
+```
+### Frontend:
+```
+cd iLegal_frontend
+```
+```
+yarn
+```
+```
+yarn start
+```
 
 ## Inspiration
 Since the invention of fax, the communication between lawyers and their clients has hardly changed. 
@@ -36,3 +51,10 @@ See challenges
 ## What's next for iLegal
 The MVP of this hackathon shows the enormous potential of iLegal. The disruptive change in how lawyers communicate with their clients has the power to transform an entire business sector. 
 We aim to get feedback from lawyers and improve the current prototype.
+
+---
+Backend magic by:
+@JackArlington and @pjkfc
+
+Frontend love by:
+@apollonian11
