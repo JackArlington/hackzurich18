@@ -22,7 +22,7 @@ export const P = styled.p `
 	font-size: 18px;
 	font-weight: 400;
 	line-height: 22px;
-	margin-top: 20px;
+	/* margin-top: 20px; */
 	color: #646464;
 `;
 

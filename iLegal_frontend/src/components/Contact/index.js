@@ -14,7 +14,7 @@ class Contact extends React.Component {
 	render() {
 		const { details } = this.props;
 		const pastCases = details.pastCases.map(a => <li>{a}</li>);
-		console.log(pastCases);
+		const remarks = details.remarks.map(a => <li>{a}</li>);
 
 		return (
 			<Card>
@@ -23,6 +23,11 @@ class Contact extends React.Component {
 				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 					<Subtitle>
 						{pastCases && <React.Fragment><span>PAST CASES</span><ul>{pastCases}</ul></React.Fragment>}
+					</Subtitle>
+				</div>
+				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+					<Subtitle>
+						{remarks && <React.Fragment><span>REMARKS</span><ul>{remarks}</ul></React.Fragment>}
 					</Subtitle>
 				</div>
 			</Card>
