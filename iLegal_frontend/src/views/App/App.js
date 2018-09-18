@@ -146,20 +146,22 @@
         const startBtn = document.getElementById("startBtn");
 
         startBtn.addEventListener("click", () => {
-          if (KEY == "" || KEY == "YOUR_BING_SPEECH_API_KEY") {
-            alert("Please enter your Bing Speech subscription key!");
-            return;
-          }
+          if (this.state.isRecording) {
+            this.recognizer.AudioSource.TurnOff();
+          } else {
+            if (KEY == "" || KEY == "YOUR_BING_SPEECH_API_KEY") {
+              alert("Please enter your Bing Speech subscription key!");
+              return;
+            }
 
-          if (!this.recognizer) {
-            this.Setup();
-          }
+            if (!this.recognizer) {
+              this.Setup();
+            }
 
-          this.RecognizerStart(window.SDK, this.recognizer);
-          startBtn.disabled = true;
+            this.RecognizerStart(window.SDK, this.recognizer);
+            startBtn.disabled = true;
+          }
         });
-
-        // this.RecognizerStop(window.SDK, recognizer);
 
         this.Initialize(function (speechSdk) {
           window.SDK = speechSdk;
@@ -198,9 +200,9 @@
             phrase: data.case_title[0],
             title: data.relevant_catchphrase,
           });
-				}
+        }
 
-				// else {
+        // else {
         //   this.setState({
         //     view: 'default',
         //     details: {},
